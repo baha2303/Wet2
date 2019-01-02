@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/HashTable.h
+Image.h
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h
+
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h
+library1LL.h
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/library1LL.h
+List.h
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/List.h
+iostream
+-
+new
+-
+
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/List.h
+
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/library1LL.h
+library2.h
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/library2.h
+
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/library2.h
+
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/main.cpp
+stdio.h
+-
+new
+-
+HashTable.h
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/HashTable.h
+Image.h
+C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h
+
