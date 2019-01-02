@@ -37,7 +37,7 @@ void *Init_Tree();
  *                SUCCESS - Otherwise.
  */
 //StatusType Add_Tree(void *DS, int key, void* value, void** node);
-StatusType Add_Tree(void *DS, int key, void* value);
+StatusType Add_Tree(void *DS, int key, void* value,int score);
 
 /* Description:   Finds an item in the data structure.
  * Input:         DS - A pointer to the data structure.
@@ -50,6 +50,8 @@ StatusType Add_Tree(void *DS, int key, void* value);
  */
 StatusType Find_Tree(void *DS, int key, void** value);
 
+bool UpdateScore(void *DS, int key, int score);
+
 /* Description:   Delete an item from the data structure.
  * Input:         DS - A pointer to the data structure.
  *                key - The item to delete.
@@ -59,6 +61,10 @@ StatusType Find_Tree(void *DS, int key, void** value);
  *                FAILURE - If the item does not exist in the DS.
  *                SUCCESS - Otherwise.
  */
+
+
+
+
 StatusType Delete_Tree(void *DS, int key);
 
 /* Description:   Delete an item from the data structure.

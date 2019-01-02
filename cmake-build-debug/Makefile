@@ -122,6 +122,60 @@ Wet2/fast:
 	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/build
 .PHONY : Wet2/fast
 
+Tree.obj: Tree.cpp.obj
+
+.PHONY : Tree.obj
+
+# target to build an object file
+Tree.cpp.obj:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/Tree.cpp.obj
+.PHONY : Tree.cpp.obj
+
+Tree.i: Tree.cpp.i
+
+.PHONY : Tree.i
+
+# target to preprocess a source file
+Tree.cpp.i:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/Tree.cpp.i
+.PHONY : Tree.cpp.i
+
+Tree.s: Tree.cpp.s
+
+.PHONY : Tree.s
+
+# target to generate assembly for a file
+Tree.cpp.s:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/Tree.cpp.s
+.PHONY : Tree.cpp.s
+
+library.obj: library.cpp.obj
+
+.PHONY : library.obj
+
+# target to build an object file
+library.cpp.obj:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/library.cpp.obj
+.PHONY : library.cpp.obj
+
+library.i: library.cpp.i
+
+.PHONY : library.i
+
+# target to preprocess a source file
+library.cpp.i:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/library.cpp.i
+.PHONY : library.cpp.i
+
+library.s: library.cpp.s
+
+.PHONY : library.s
+
+# target to generate assembly for a file
+library.cpp.s:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/library.cpp.s
+.PHONY : library.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -158,6 +212,12 @@ help:
 	@echo ... Wet2
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... Tree.obj
+	@echo ... Tree.i
+	@echo ... Tree.s
+	@echo ... library.obj
+	@echo ... library.i
+	@echo ... library.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

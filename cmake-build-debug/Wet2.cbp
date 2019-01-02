@@ -86,10 +86,25 @@
 		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h">
 			<Option target="Wet2"/>
 		</Unit>
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/ImageTagger.h">
+			<Option target="Wet2"/>
+		</Unit>
 		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/List.h">
 			<Option target="Wet2"/>
 		</Unit>
-		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/ScoresValue.h">
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/Tree.cpp">
+			<Option target="Wet2"/>
+		</Unit>
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/Tree.h">
+			<Option target="Wet2"/>
+		</Unit>
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/TreeClass.h">
+			<Option target="Wet2"/>
+		</Unit>
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.cpp">
+			<Option target="Wet2"/>
+		</Unit>
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.h">
 			<Option target="Wet2"/>
 		</Unit>
 		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/main.cpp">

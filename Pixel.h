@@ -7,10 +7,11 @@
 
 #include "TreeClass.h"
 #include"Tree.h"
-#include "ScoresValue.h"
 class Pixel{
 public:
-   // int Id; not important if the ids are from 0 to pixels-1
+    int treeSize=0;
+    int maxScore=0;
+    int maxLabel=0;
     int size;
     Tree<int>* labelsTree;
     Pixel* parent;
@@ -26,7 +27,8 @@ public:
     }
     void destroy(){
         Quit_Tree((void**)&labelsTree);
-
     }
+
+
 };
 #endif //IMAGESPROGRAM_PIXEL_H

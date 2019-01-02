@@ -1,14 +1,9 @@
 //
-// Created by baha2 on 03-Dec-18.
+// Created by baha2 on 1/2/2019.
 //
 
-#include "stdio.h"
-#include <iostream>     // std::cout
-#include <new>          // std::bad_alloc
-
-#ifndef HW2_TREE_TREE_H
-#define HW2_TREE_TREE_H
-
+#ifndef WET2_TREECLASS_H
+#define WET2_TREECLASS_H
 
 typedef void* Data;
 
@@ -26,7 +21,10 @@ class Tree {
     Tree *leftSon= nullptr;
     Tree *rightSon= nullptr;
 public:
+    int size;
     int index;
+    int maxScore;
+    int score;
     explicit Tree(const T &key, Data value, Tree *father) : height(0), key(key), valuePtr(value),
      father(father),index(0),leftSon(nullptr),rightSon(nullptr) {}
 
@@ -73,8 +71,7 @@ public:
         height = newHeight;
     }
 
-    int size;
 
 };
 
-#endif //HW2_TREE_TREE_H
+#endif //WET2_TREECLASS_H

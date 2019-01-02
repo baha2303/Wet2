@@ -2,60 +2,10 @@
 #include "Tree.h"
 #include <cstdbool>
 #include <cassert>
-using std::cout;
-#include "Tree.h"
-#include "library1Tree.h"
-#include <cstdbool>
-#include <cassert>
+#include  <new>
+#include <iostream>
 using std::cout;
 
-/*void my_test_aux(Tree<int>* node,int key){
-    if(node==nullptr){
-        return;
-    }
-    if(node->getFather()->getKey()==8256){
-        cout << node->getKey()<<"********"<<key << std::endl;
-    }
-    my_test_aux(node->getLeft(),key);
-    my_test_aux(node->getRight(),key);
-}
-void my_test(void* DS,int key){
-    auto head = static_cast<Tree<int> *>(DS);
-    Tree<int>* node=head->getLeft();
-    my_test_aux(node,key);
-}
-
-void PrintTree_Aux (void* root){
-    auto node = static_cast<Tree<int> *>(root);
-    if (node == nullptr){
-        return;
-    }
-    cout << "--" << node->getKey()  ;
-    cout << "--" << node->getFather()->getKey();
-    if(node->getLeft()) {
-        cout << "--" << node->getLeft()->getKey();
-    }
-    else{
-        cout << "--NULL";
-    }
-    if(node->getRight()) {
-        cout << "--" <<node->getRight()->getKey();
-    }
-    else{
-        cout << "--NULL";
-    }
-    printf("\n");
-    PrintTree_Aux(node->getLeft());
-    printf("\n");
-    PrintTree_Aux(node->getRight());
-}
-
-void PrintTree (void* root) {
-
-    auto node = static_cast<Tree<int> *>(root);
-    node=node->getLeft();
-    PrintTree_Aux(node);
-}*/
 //static void AVL_Fix(int BF_father, int BF_son, Tree<int> *p, Tree<int> *v) {
 static int AVL_Fix(int BF_father, Tree<int> *p) {
     assert(p->getKey()>=0 &&p->getKey()<=11110);
@@ -348,20 +298,20 @@ void *Init_Tree() {
     }
 }
 
-StatusType Add_Tree(void *DS, int key, void *value, void **node) {
-    if (!DS || !node) {
+StatusType Add_Tree(void *DS, int key, void *value, int score) {
+    if (!DS ) {
         return INVALID_INPUT;
     }
     auto head = static_cast<Tree<int> *>(DS);//head is the dummy
     try {
-        Tree<int> *newTree = new Tree<int>(key, value, nullptr);//making a new node
+        Tree<int> *newTree = new Tree<int>(key, value, nullptr);//making a new node.
+        newTree->score=score;
+        newTree->maxScore=score;
         if (head->size == 0) {//if the tree is empty
             newTree->setFather(head);
             head->setLeft(newTree);
-            //newTree->setLeft(nullptr);
-            // newTree->setRight(nullptr);
-            *node=newTree;
             (head->size)++;
+
             return SUCCESS;
         }
 
@@ -384,9 +334,8 @@ StatusType Add_Tree(void *DS, int key, void *value, void **node) {
                 curr = curr->getRight();
             }
         }
-        // newTree->setLeft(nullptr);
-        // newTree->setRight(nullptr);
-        *node = newTree;
+
+
         (head->size)++;//root here is the dummy
         sortTree<int>(head->getLeft(), newTree);//sortTree: insert algorithm fix
     } catch (std::bad_alloc& ba) {
@@ -408,6 +357,22 @@ StatusType Find_Tree(void *DS, int key, void **value) {
         return SUCCESS;
     }
 }
+bool UpdateScore(void *DS, int key, int score) {
+    if (!DS) {
+        return false;
+    }
+    Tree<int>* node = Find_Helper( DS , key );
+    if(!node){
+        return false;//because the key wasn't found
+    }
+    else{
+        node->score=score;
+        node->maxScore=score;
+        return SUCCESS;
+    }
+}
+
+
 
 StatusType Delete_Tree(void *DS, int key){
     if(!DS){
@@ -457,11 +422,21 @@ void Quit_Tree(void **DS) {
 }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void treeToArray(void* tree,int* array){
-    assert(array);
+void maxLabelFix(Tree<int> *head) {
 
-    tree = static_cast< Tree<int>* >(tree);
+        if (head == nullptr) return;
+        if (head->getLeft()) { QuitAux(head->getLeft()); }
+        if (head->getRight()) { QuitAux(head->getRight()); }
+        head->
+    }
+
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void treeToArray(Tree<int>* tree,int* array){
+    assert(array);
     if(!tree){
         return;
     }
@@ -471,16 +446,16 @@ void treeToArray(void* tree,int* array){
     treeToArray(tree->getRight(),array);
 }
 
-void* arrayToTreeAux(int * array,int left,int right,void* father){
+Tree<int>* arrayToTreeAux(int * array,int left,int right,Tree<int>* father){
     if(left==right){
         Tree<int>* subTree = new Tree<int>(array[left], , father);
     }
     int mid=(left+right)/2;
     Tree<int>* root = new Tree<int>(array[mid], , father);
     root->setLeft(arrayToTreeAux(array,left,mid,root));
-    root->setRight(arrayToTreeAux(array,mid+1,right,root));
+    root->setLeft(arrayToTreeAux(array,mid+1,right,root));
 }
-void* arrayToTree(int * array,int size){
+Tree<int>* arrayToTree(int * array,int size){
     Tree<int>* tree=(Tree<int>*) Init_Tree();
     tree->setLeft(arrayToTreeAux(array,0,size-1,tree));
     return tree;
@@ -512,18 +487,14 @@ void mergeArrays(int *a,int na,int* b,int nb,int* dest){
     }
 }
 
-void* mergeTrees(void* tree1,int size1,void* tree2,int size2){
-
-    tree1 = static_cast< Tree<int>* >(tree1);
-    tree2 = static_cast< Tree<int>* >(tree2);
-
+Tree<int>* mergeTrees(Tree<int>* tree1,int size1,Tree<int>* tree2,int size2){
     int* array1=new int[size1];
     int* array2=new int[size2];
     int* mergedArr=new int[size1+size2];
     treeToArray(tree1,array1);
     treeToArray(tree2,array2);
     mergeArrays(array1,size1,array2,size2,mergedArr);
-    void* mergedTree = arrayToTree(mergedArr,size1+size2);
+    Tree<int>* mergedTree = arrayToTree(mergedArr,size1+size2);
     delete [] array1;
     delete [] array2;
     delete [] mergedArr;

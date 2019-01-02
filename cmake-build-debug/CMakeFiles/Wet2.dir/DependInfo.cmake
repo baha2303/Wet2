@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "C:/Users/baha2/Desktop/Data Structures 1/Wet2/Tree.cpp" "C:/Users/baha2/Desktop/Data Structures 1/Wet2/cmake-build-debug/CMakeFiles/Wet2.dir/Tree.cpp.obj"
+  "C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.cpp" "C:/Users/baha2/Desktop/Data Structures 1/Wet2/cmake-build-debug/CMakeFiles/Wet2.dir/library.cpp.obj"
   "C:/Users/baha2/Desktop/Data Structures 1/Wet2/main.cpp" "C:/Users/baha2/Desktop/Data Structures 1/Wet2/cmake-build-debug/CMakeFiles/Wet2.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

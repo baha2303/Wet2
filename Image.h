@@ -31,6 +31,7 @@ public:
             pixelArr[i] = new Pixel();
         }
     }
+
     void destroy(){
         for(int i=0;i<pixels;i++){
             pixelArr[i]->destroy();
@@ -38,30 +39,50 @@ public:
         }
         delete [] pixelArr;
     }
-    void setLabelScore(int index,int label, int score){
+
+
+
+    StatusType setLabelScore(int index,int label, int score){
         Pixel* pixel = pixelArr[index];
         Pixel* superPixel =pixel->getSuper();
         setRouteParent(pixel,superPixel);
-        Add_Tree(superPixel->labelsTree,label,&score);//adding the label and score to the super pixel
+        void* node;
+        if(UpdateScore(superPixel->labelsTree,label,score)) return SUCCESS;
+        if(Add_Tree(superPixel->labelsTree,label,nullptr,score)!=SUCCESS) //adding the label and score to the super pixel
+            return FAILURE;
+        superPixel->treeSize++;
+        //////////////////////////////////////////////////////////////should fix after insertion !!!!!!
+///////////////////////////////////////update maxLabel and maxScore for superPixel !!
+
+        return SUCCESS;
     }
+
+
+
     StatusType resetLabelScore(int index,int label){
         Pixel* pixel = pixelArr[index];
         Pixel* superPixel =pixel->getSuper();
         setRouteParent(pixel,superPixel);
-        int* score;
-        if(Find_Tree(superPixel->labelsTree,label,(void**)&score)==FAILURE){
-            return FAILURE;
-        }
-        else {
-            *score = 0;
-        }
-    }
-    void getHighestLabel(int index,int *label){
-        Pixel* superPixel = pixelArr[index]->getSuper();
+        if(UpdateScore(superPixel->labelsTree,label,0)) return SUCCESS;
+//////////////////////////////////////////////////////////////neeeds Fix after updating label to zero. and need to
+///////////////////////////////////////update maxLabel and maxScore for superPixel !!
 
+        return FAILURE;
     }
-    void mergeSets(int index1, int index2){
-        Pixel* dest,*source;
+
+
+
+    StatusType getHighestLabel(int index,int *label){
+        Pixel* superPixel = pixelArr[index]->getSuper();
+        if(superPixel->treeSize==0) return FAILURE;
+        *label=superPixel->maxLabel;
+        return SUCCESS;
+    }
+
+
+
+    StatusType mergeSets(int index1, int index2){
+        Pixel *dest,*source;
 
         Pixel* pixel1=pixelArr[index1];
         Pixel* superPixel1 = pixel1->getSuper();
@@ -82,12 +103,24 @@ public:
         source->parent=dest;
         dest->size+=source->size;
         mergeTrees(dest->labelsTree,dest->size,source->labelsTree,source->size);
+        FixMaxLabel
+
+        //////////////////////////////////////////////////////////////not done need to fix max !!
 
     }
 
 
 
 
+    void Quit() {
+        for(int i=0 ; i<pixels ; i++) {
+            pixelArr[i]->destroy();
+            delete( pixelArr[i]);
+        }
+        delete[](pixelArr);
+    }
 };
 
 #endif //HW2_LIBRARY_IMAGE_H
+
+

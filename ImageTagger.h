@@ -15,10 +15,29 @@
 
 class ImageTagger {
 
+
+
+public:
+
     Hash hashTable;
     int pixels;
+    ImageTagger(int pixels) : pixels(pixels) {
+            Hash* hash=new Hash();
+            hashTable=*hash;
+    }
 
-    ImageTagger(int pixels) : pixels(pixels) {}
+    StatusType addImage (int imageId) {
+        if(imageId<=0) return INVALID_INPUT;
+        if(hashTable.find_element(imageId)!= nullptr)
+            return FAILURE;
+
+        Image* image= new Image(imageId,pixels);
+        if(hashTable.add_element(*image))
+            return SUCCESS;
+        else
+            return ALLOCATION_ERROR;
+    }
+
 
     StatusType deleteImage (int imageId) {
         if(imageId<=0) return INVALID_INPUT;
@@ -28,19 +47,51 @@ class ImageTagger {
     }
 
 
-    StatusType addImage (int imageId) {
-        if(imageId<=0) return INVALID_INPUT;
-        if(hashTable.find_element(imageId))
-            return FAILURE;
+    StatusType SetLabelScore(int imageID, int pixel, int label, int score) {
 
-        Image image= Image(imageId,pixels);
-       if(hashTable.add_element(image))
-        return SUCCESS;
-       else
-           return ALLOCATION_ERROR;
+        Image* image= hashTable.find_element(imageID);
+        if(!image) return FAILURE;
+
+        return (image->setLabelScore(pixel,label,score));
+
+    }
+
+    StatusType ResetLabelScore( int imageID, int pixel, int label) {
+        Image* image= hashTable.find_element(imageID);
+        if(!image) return FAILURE;
+        return(image->resetLabelScore(pixel,label));
     }
 
 
+    StatusType GetHighestScoredLabel( int imageID, int pixel, int *label){
+        Image* image= hashTable.find_element(imageID);
+        if(!image) return FAILURE;
+
+        return (image->getHighestLabel(pixel,label));
+    }
+
+    StatusType MergeSuperPixels( int imageID, int pixel1, int pixel2) {
+        Image* image= hashTable.find_element(imageID);
+        if(!image) return FAILURE;
+
+        return (image->mergeSets(pixel1,pixel2));
+
+    }
+
+
+    void Quit() {
+        int size;
+        Image** elements = hashTable.getHashArray(&size);
+        for(int i=0 ; i<size ; i++) {
+            if(elements[i]!= nullptr) {
+                if (elements[i]->imageId==DELETED) break;
+                elements[i]->Quit();
+                delete (elements[i]);
+            }
+        }
+        delete[](elements);
+        delete(&hashTable);
+    }
 
 
 

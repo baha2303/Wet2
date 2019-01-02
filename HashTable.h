@@ -11,12 +11,15 @@
 #define DELETED -1
 
 class Hash {
-public:
     Image **table;
+public:
+
     int size=7;
     int elements=0;
-    Image *deleted_image = new Image(1,1);
+    Image *deleted_image = new Image(1,1);  ///////////////////////////remember to free !!!!
     bool transferring= false;
+
+    //constructor
     Hash() {
        table= new Image*[size];
        for(int i=0 ; i< size ; i++) {
@@ -24,11 +27,15 @@ public:
        }
         deleted_image->imageId=DELETED;
     }
+
+    //function for turning an imageId into an interger that fits the array
     int hash_function(int key, int i) {
 
         return (key%size + i*(1+key%(size-2)))%size;
 
     }
+
+
     bool add_element(Image& image) {
         int i = 0;
         bool done = false;
@@ -72,18 +79,18 @@ bool delete_element(int imageId) {
     return false;
 }
 
-bool find_element(int imageId) {
+Image* find_element(int imageId) {
         int i=0;
     int hashed=hash_function(imageId,i);
     while(table[hashed] != nullptr ) {
         if(table[hashed]->imageId==imageId) {
-            return true;
+            return table[hashed];
         }
         i++;
         hashed=hash_function(imageId,i);
     }
 
-    return false;
+    return nullptr;
     }
 
 
@@ -119,6 +126,10 @@ bool find_element(int imageId) {
 
     }
 
+    Image** getHashArray(int* array_size) {
+        *array_size=size;
+        return table;
+    }
 
 
     void print() {
