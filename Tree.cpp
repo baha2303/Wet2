@@ -6,6 +6,63 @@
 #include <iostream>
 using std::cout;
 
+
+//functions for updating max score after insertion or deletion.
+
+static int maxOfThree (int a , int b , int c ) {
+    if(a >= b   ) {
+        if(a>=c) return a;
+        if(a < c ) return c;
+    } else {
+        if(b >= c) return b;
+        if(b < c ) return c;
+    }
+
+}
+
+int getMaxScore(Tree<int> *node) {
+    if(node == nullptr) return 0;
+    else
+        return node->maxScore;
+}
+
+void updateMax (void *node1) {
+    Tree<int>* node=static_cast<Tree<int> *>(node1);
+    node->maxScore=maxOfThree(getMaxScore(node),getMaxScore(node->getLeft()),getMaxScore(node->getRight()));
+    return;
+}
+
+bool UpdateScore(void *DS, int key, int score,void* root) {
+    if (!DS) {
+        return false;
+    }
+
+    Tree<int>* node = Find_Helper( DS , key );
+    if(!node){
+        return false;//because the key wasn't found
+    }
+    else{
+        node->score=score;
+        updateMax(node);
+        updateTillRoot(node,root);
+        return true;
+    }
+
+}
+
+void updateTillRoot(void *node,void *root) {
+
+    Tree<int>* node_=static_cast<Tree<int> *>(node);
+    Tree<int>* root_=static_cast<Tree<int> *>(root);
+
+
+    while(node_ != root_) {
+        updateMax(node_);
+        node_=node_->getFather();
+    }
+    return;
+}
+
 //static void AVL_Fix(int BF_father, int BF_son, Tree<int> *p, Tree<int> *v) {
 static int AVL_Fix(int BF_father, Tree<int> *p) {
     assert(p->getKey()>=0 &&p->getKey()<=11110);
@@ -34,6 +91,8 @@ static int AVL_Fix(int BF_father, Tree<int> *p) {
         p->setFather(v);
         p->setHeight(max(p->getLeft()->getHeight(),p->getRight()->getHeight())+1);
         v->setHeight(max(v->getLeft()->getHeight(),v->getRight()->getHeight())+1);
+        updateMax(p);
+        updateMax(v);
         return v->getHeight();//returning the height of the tat tree
     }
 //LR Rotation
@@ -61,6 +120,9 @@ static int AVL_Fix(int BF_father, Tree<int> *p) {
         p->setHeight(max(p->getLeft()->getHeight(),p->getRight()->getHeight())+1);
         v->setHeight(max(v->getLeft()->getHeight(),v->getRight()->getHeight())+1);
         B->setHeight(max(p->getHeight(),v->getHeight())+1);
+        updateMax(p);
+        updateMax(v);
+        updateMax(B);
         return B->getHeight();
     }
     //RR Rotation
@@ -80,6 +142,8 @@ static int AVL_Fix(int BF_father, Tree<int> *p) {
         p->setFather(v);
         p->setHeight(max(p->getLeft()->getHeight(), p->getRight()->getHeight()) + 1);
         v->setHeight(max(v->getLeft()->getHeight(), v->getRight()->getHeight()) + 1);
+        updateMax(p);
+        updateMax(v);
         return v->getHeight();//returning the height of the tat tree
     }
     //RL Rotation
@@ -107,10 +171,16 @@ static int AVL_Fix(int BF_father, Tree<int> *p) {
         p->setHeight(max(p->getLeft()->getHeight(),p->getRight()->getHeight())+1);
         v->setHeight(max(v->getLeft()->getHeight(),v->getRight()->getHeight())+1);
         B->setHeight(max(p->getHeight(),v->getHeight())+1);
+        updateMax(p);
+        updateMax(v);
+        updateMax(B);
         return B->getHeight();
     }
     return -1;
 }
+
+
+
 
 /*sortTree() receives the real root not the dummy, and the added vertice.
 it iterates over the route from the added vertice to the root and looks for
@@ -120,15 +190,17 @@ template <class  T>
 static void sortTree(Tree<T> *root, Tree<T> *v) {
     assert(v && root);//to// make sure non of them is null
     if (v == root) {
+        updateMax(v);
         return;
     }
     Tree<T> *p = v->getFather();
+    updateMax(p);
     if ((p->getHeight()) >= (v->getHeight() + 1)) {
         return;
     }
     p->setHeight(v->getHeight() + 1);
     int BF_father = p->getLeft()->getHeight() - p->getRight()->getHeight();
-    //int BF_son = v->getLeft()->getHeight() - v->getRight()->getHeight();
+    updateMax(p);
     if (BF_father >= 2 || BF_father <= -2) {
         AVL_Fix(BF_father ,p);
         return;
@@ -138,34 +210,25 @@ static void sortTree(Tree<T> *root, Tree<T> *v) {
 }
 template<class T>
 static void sortTreeDel(Tree<T>* root, Tree<T>* v){
-    assert(v&&root );//to make sure non of them is null
+    assert(v && root );//to make sure non of them is null
     if (v == root) {
+        updateMax(v);
         return;
     }
     Tree<T>* p=v->getFather();
-    // Tree<T>* brother=nullptr;
     int oldHeight=v->getHeight();
     v->setHeight(max(v->getLeft()->getHeight(),v->getRight()->getHeight())+1);
     int newHeight=v->getHeight();
     int BF=v->getLeft()->getHeight()-v->getRight()->getHeight();
-    //if(p->getRight()==v){
-    //    brother=p->getLeft();
-    // }
-    //else{
-    //   brother=p->getRight();
-    //}
-    //assert(brother);
+    updateMax(p);
     if(BF>=2||BF<=-2){
-        //int BF_son=son->getLeft()->getHeight()-son->getRight()->getHeight();
         newHeight = AVL_Fix(BF,v);
-        //assert(brother);
     }
-    //cout << "*******************8888888888******************"<<std::endl;
-    // my_test(root->getFather(),8251);
-    // cout << "*******************8888888888******************"<<std::endl;
+
     if(oldHeight==newHeight){
         return;
     }
+
     sortTreeDel(root,p);
 }
 
@@ -203,8 +266,7 @@ static void remove_node(Tree<int>* root, Tree<int>* node){
     if(node!=root) {
         sortTreeDel<int>(root,nodePa);
     }
-    //nodePa->setHeight(max(node->getHeight()-1,nodePa->getRight()->getHeight())+1);
-    //int nodepahhegiht=nodePa->getHeight();
+
     delete node;
 }
 //helper function for delete
@@ -298,7 +360,7 @@ void *Init_Tree() {
     }
 }
 
-StatusType Add_Tree(void *DS, int key, void *value, int score) {
+StatusType Add_Tree(void *DS, int key, void *value, int score,void **node) {
     if (!DS ) {
         return INVALID_INPUT;
     }
@@ -311,7 +373,7 @@ StatusType Add_Tree(void *DS, int key, void *value, int score) {
             newTree->setFather(head);
             head->setLeft(newTree);
             (head->size)++;
-
+            *node=newTree;
             return SUCCESS;
         }
 
@@ -335,7 +397,7 @@ StatusType Add_Tree(void *DS, int key, void *value, int score) {
             }
         }
 
-
+        *node=newTree;
         (head->size)++;//root here is the dummy
         sortTree<int>(head->getLeft(), newTree);//sortTree: insert algorithm fix
     } catch (std::bad_alloc& ba) {
@@ -357,20 +419,6 @@ StatusType Find_Tree(void *DS, int key, void **value) {
         return SUCCESS;
     }
 }
-bool UpdateScore(void *DS, int key, int score) {
-    if (!DS) {
-        return false;
-    }
-    Tree<int>* node = Find_Helper( DS , key );
-    if(!node){
-        return false;//because the key wasn't found
-    }
-    else{
-        node->score=score;
-        node->maxScore=score;
-        return SUCCESS;
-    }
-}
 
 
 
@@ -378,16 +426,12 @@ StatusType Delete_Tree(void *DS, int key){
     if(!DS){
         return INVALID_INPUT;
     }
-/*	if(key==8251){
-	    PrintTree(DS);
-	    cout << "";
-    }*/
+
     Tree<int>* node = Find_Helper( DS , key );
     if(!node){
         return FAILURE;//because the key wasn't found
     }
     DeleteByPointer_Tree(DS,node);
-    //my_test(DS,key);
     return SUCCESS;
 }
 
@@ -422,31 +466,27 @@ void Quit_Tree(void **DS) {
 }
 
 
-void maxLabelFix(Tree<int> *head) {
-
-        if (head == nullptr) return;
-        if (head->getLeft()) { QuitAux(head->getLeft()); }
-        if (head->getRight()) { QuitAux(head->getRight()); }
-        head->
-    }
 
 
-}
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void treeToArray(Tree<int>* tree,int* array){
+/*
+void treeToArray(void* tree,int* array){
     assert(array);
     if(!tree){
         return;
     }
-    treeToArray(tree->getLeft(),array);
-    array[tree->index]=tree->getKey();
-    tree->index++;
-    treeToArray(tree->getRight(),array);
+    Tree<int>* tree_=static_cast<Tree<int> *>(tree);
+    treeToArray(tree_->getLeft(),array);
+    array[tree_->index]=tree_->getKey();
+    tree_->index++;
+    treeToArray(tree_->getRight(),array);
 }
 
-Tree<int>* arrayToTreeAux(int * array,int left,int right,Tree<int>* father){
+void* arrayToTreeAux(int * array,int left,int right,void* father){
     if(left==right){
         Tree<int>* subTree = new Tree<int>(array[left], , father);
     }
@@ -455,7 +495,7 @@ Tree<int>* arrayToTreeAux(int * array,int left,int right,Tree<int>* father){
     root->setLeft(arrayToTreeAux(array,left,mid,root));
     root->setLeft(arrayToTreeAux(array,mid+1,right,root));
 }
-Tree<int>* arrayToTree(int * array,int size){
+void* arrayToTree(int * array,int size){
     Tree<int>* tree=(Tree<int>*) Init_Tree();
     tree->setLeft(arrayToTreeAux(array,0,size-1,tree));
     return tree;
@@ -487,7 +527,7 @@ void mergeArrays(int *a,int na,int* b,int nb,int* dest){
     }
 }
 
-Tree<int>* mergeTrees(Tree<int>* tree1,int size1,Tree<int>* tree2,int size2){
+void* mergeTrees(void* tree1,int size1,void* tree2,int size2);{
     int* array1=new int[size1];
     int* array2=new int[size2];
     int* mergedArr=new int[size1+size2];
@@ -499,3 +539,12 @@ Tree<int>* mergeTrees(Tree<int>* tree1,int size1,Tree<int>* tree2,int size2){
     delete [] array2;
     delete [] mergedArr;
 }
+*/
+
+
+
+
+
+
+
+

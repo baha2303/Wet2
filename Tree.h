@@ -8,12 +8,8 @@ extern "C" {
 
 /* Return Values
  * ----------------------------------- */
-typedef enum {
-    SUCCESS = 0,
-    FAILURE = -1,
-    ALLOCATION_ERROR = -2,
-    INVALID_INPUT = -3
-} StatusType;
+
+#include "library.h"
 
 /* Required Interface for the Data Structure
  * -----------------------------------------*/
@@ -37,7 +33,7 @@ void *Init_Tree();
  *                SUCCESS - Otherwise.
  */
 //StatusType Add_Tree(void *DS, int key, void* value, void** node);
-StatusType Add_Tree(void *DS, int key, void* value,int score);
+StatusType Add_Tree(void *DS, int key, void* value,int score,void **node);
 
 /* Description:   Finds an item in the data structure.
  * Input:         DS - A pointer to the data structure.
@@ -50,7 +46,7 @@ StatusType Add_Tree(void *DS, int key, void* value,int score);
  */
 StatusType Find_Tree(void *DS, int key, void** value);
 
-bool UpdateScore(void *DS, int key, int score);
+
 
 /* Description:   Delete an item from the data structure.
  * Input:         DS - A pointer to the data structure.
@@ -96,6 +92,8 @@ void Quit_Tree(void** DS);
 
 //functions for merging two AVL Trees. in O(N) time .
 
+
+/*
 void* mergeTrees(void* tree1,int size1,void* tree2,int size2);
 
 //merge sort
@@ -115,9 +113,15 @@ void* arrayToTreeAux(int * array,int left,int right,void* father);
 
 //copying a tree to array
 void treeToArray(void* tree,int* array);
+*/
 
 
 
+void updateTillRoot(void *node,void *root);
+
+bool UpdateScore(void *DS, int key, int score,void* root);
+
+void updateMax (void *node1);
 
 #ifdef __cplusplus
 }

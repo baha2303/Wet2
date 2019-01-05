@@ -29,6 +29,9 @@ public:
         Quit_Tree((void**)&labelsTree);
     }
 
+    Tree<int>* getRoot () {
+        return labelsTree->getLeft();
+    }
 
 };
 #endif //IMAGESPROGRAM_PIXEL_H

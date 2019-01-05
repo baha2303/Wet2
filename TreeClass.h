@@ -22,11 +22,11 @@ class Tree {
     Tree *rightSon= nullptr;
 public:
     int size;
-    int index;
+    static int index;
     int maxScore;
     int score;
     explicit Tree(const T &key, Data value, Tree *father) : height(0), key(key), valuePtr(value),
-     father(father),index(0),leftSon(nullptr),rightSon(nullptr) {}
+     father(father),leftSon(nullptr),rightSon(nullptr) {}
 
     T &getKey() {
         return key;

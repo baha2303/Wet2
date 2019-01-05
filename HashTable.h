@@ -67,6 +67,7 @@ bool delete_element(int imageId) {
     int hashed=hash_function(imageId,i);
     while(table[hashed]!= nullptr ) {
         if(table[hashed]->imageId == imageId) {
+            table[hashed]->destroy();
             table[hashed]=deleted_image;
             elements--;
             resize();
