@@ -31,33 +31,43 @@ public:
     //function for turning an imageId into an interger that fits the array
     int hash_function(int key, int i) {
 
-        return (key%size + i*(1+key%(size-2)))%size;
+        return (key%size + i*(1+key%(size-3)))%size;
 
     }
 
 
     bool add_element(Image& image) {
+
         int i = 0;
         bool done = false;
         while (!done) {
             int hashed = hash_function(image.imageId, i);
-            if (table[hashed] == nullptr || table[hashed]->imageId == DELETED) {
-                if(transferring== false) {
+            if (table[hashed] == nullptr ) {
                     elements++;
-                }
                 done = true;
                 table[hashed]=&image;
-                resize();
-                return true;
+                if(!transferring)
+                {
+                    resize();
+                }
 
+                return true;
             }
+            if (table[hashed]->imageId == DELETED ) {
+                done = true;
+                table[hashed]=&image;
+                return true;
+            }
+
+
 
             if(table[hashed]->imageId == image.imageId) {
                 return false;
             }
+
             i++;
         }
-        return true;
+
 
     }
 
@@ -69,7 +79,6 @@ bool delete_element(int imageId) {
         if(table[hashed]->imageId == imageId) {
             table[hashed]->destroy();
             table[hashed]=deleted_image;
-            elements--;
             resize();
             return true;
         }
@@ -112,6 +121,7 @@ Image* find_element(int imageId) {
       int old_size=size;
       table= new Image*[new_size];
       size=new_size;
+      elements=0;
         for (int i = 0; i < size ; ++i) {
             table[i]= nullptr;
 

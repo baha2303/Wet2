@@ -9,13 +9,13 @@
 #include"Tree.h"
 class Pixel{
 public:
-    int treeSize=0;
-    int maxScore=0;
-    int maxLabel=0;
+    int treeSize;
+    int maxScore;
+    int maxLabel;
     int size;
     Tree<int>* labelsTree;
     Pixel* parent;
-    Pixel():size(1),parent(nullptr) {
+    Pixel():treeSize(0),maxScore(0),maxLabel(-1),size(1),parent(nullptr) {
         labelsTree = (Tree<int> *) Init_Tree();
     }
     Pixel* getSuper(){

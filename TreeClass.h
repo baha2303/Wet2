@@ -22,7 +22,6 @@ class Tree {
     Tree *rightSon= nullptr;
 public:
     int size;
-    static int index;
     int maxScore;
     int score;
     explicit Tree(const T &key, Data value, Tree *father) : height(0), key(key), valuePtr(value),

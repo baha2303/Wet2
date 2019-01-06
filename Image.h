@@ -22,7 +22,7 @@ public:
     explicit  Image(int id,int pixels):imageId(id),pixels(pixels) {
         pixelArr = new Pixel*[pixels];
         for(int i=0;i<pixels;i++) {
-            pixelArr[i] = new Pixel();
+            pixelArr[i] = new Pixel();//pixel
         }
     }
 
@@ -86,8 +86,12 @@ public:
         return root;
     }
     Tree<int>* arrayToTree(Tree<int> * array[],int size){
+
+
         Tree<int>* head=(Tree<int>*) Init_Tree();
-        head->setLeft(arrayToTreeAux(array,0,size-1,head));
+        if(size>0) {
+            head->setLeft(arrayToTreeAux(array, 0, size - 1, head));
+        }
         return head;
     }
 //dest should be sized m+n;
@@ -98,10 +102,12 @@ public:
             if (ia<na && ib<nb) {
                 if (a[ia]->getKey() < b[ib]->getKey()) {
                     dest[ic]=new Tree<int>(a[ia]->getKey(), nullptr, nullptr);
+                    dest[ic]->score=a[ia]->score;
                     ia++;
                 }
                 else if(a[ia]->getKey() > b[ib]->getKey()){
                     dest[ic]=new Tree<int>(b[ib]->getKey(), nullptr, nullptr);
+                    dest[ic]->score=b[ib]->score;
                     ib++;
 
                 }
@@ -120,11 +126,13 @@ public:
             else if (ia == na) {
                 for (; ib < nb ;ic++,ib++) {
                     dest[ic]=new Tree<int>(b[ib]->getKey(), nullptr, nullptr);
+                    dest[ic]->score=b[ib]->score;
                 }
             }
             else {
                 for (; ia< na ;ic++,ia++) {
                     dest[ic]=new Tree<int>(a[ia]->getKey(), nullptr, nullptr);
+                    dest[ic]->score=a[ia]->score;
                 }
             }
         }
@@ -142,7 +150,7 @@ public:
         treeToArray(tree2,array2,&index);
         *returnsize=mergeArrays(array1,size1,array2,size2,mergedArr);
         Tree<int>* mergedTree = arrayToTree(mergedArr,*returnsize);
-        updateAllMaxScores(mergedTree);
+        updateAllMaxScores(mergedTree->getLeft());
         updateAllHeights(mergedTree);
         delete [] array1;
         delete [] array2;
@@ -216,7 +224,16 @@ public:
         }
         source->parent=dest;
         dest->size+=source->size;
-
+        if(source->treeSize==0 ) {
+            Quit_Tree((void**)&(source->labelsTree));
+            return SUCCESS;
+        }
+        if(dest->treeSize==0 ) {
+            Quit_Tree((void**)&(dest->labelsTree));
+            dest->labelsTree=source->labelsTree;
+            dest->treeSize=source->treeSize;
+            return SUCCESS;
+        }
         Tree<int>* newTree=mergeTrees(dest->getRoot(),dest->treeSize,source->getRoot(),source->treeSize,&(dest->treeSize));
         dest->labelsTree=newTree;
         UpdateMaxLabel(dest->getRoot());

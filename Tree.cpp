@@ -433,7 +433,7 @@ int getMaxScore(Tree<int> *node) {
 
 void updateMax (void *node1) {
     Tree<int>* node=static_cast<Tree<int> *>(node1);
-    node->maxScore=maxOfThree(getMaxScore(node),getMaxScore(node->getLeft()),getMaxScore(node->getRight()));
+    node->maxScore=maxOfThree(node->score,getMaxScore(node->getLeft()),getMaxScore(node->getRight()));
     return;
 }
 
