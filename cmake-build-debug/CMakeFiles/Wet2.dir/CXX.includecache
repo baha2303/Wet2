@@ -6,42 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/HashTable.h
-Image.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h
-
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h
-TreeClass.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/TreeClass.h
-Tree.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Tree.h
-iostream
--
-new
--
-Pixel.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Pixel.h
-assert.h
--
-
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/ImageTagger.h
-iostream
--
-new
--
-Image.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h
-Tree.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Tree.h
-HashTable.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/HashTable.h
-
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Pixel.h
-TreeClass.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/TreeClass.h
-Tree.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Tree.h
-
 C:/Users/baha2/Desktop/Data Structures 1/Wet2/Tree.cpp
 TreeClass.h
 C:/Users/baha2/Desktop/Data Structures 1/Wet2/TreeClass.h
@@ -62,23 +26,5 @@ C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.h
 
 C:/Users/baha2/Desktop/Data Structures 1/Wet2/TreeClass.h
 
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.cpp
-library.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.h
-ImageTagger.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/ImageTagger.h
-
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.h
-
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/main.cpp
-stdio.h
--
-new
--
-HashTable.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/HashTable.h
-Image.h
-C:/Users/baha2/Desktop/Data Structures 1/Wet2/Image.h
-library.h
 C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.h
 

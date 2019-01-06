@@ -14,13 +14,13 @@ class Hash {
     Image **table;
 public:
 
-    int size=7;
-    int elements=0;
+    int size;
+    int elements;
     Image *deleted_image = new Image(1,1);  ///////////////////////////remember to free !!!!
     bool transferring= false;
 
     //constructor
-    Hash() {
+    Hash():size(7),elements(0) {
        table= new Image*[size];
        for(int i=0 ; i< size ; i++) {
            table[i]= nullptr;

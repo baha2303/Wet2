@@ -17,7 +17,6 @@ class Image {
     int pixels;
 
 
-
 public:
     int imageId;
     explicit  Image(int id,int pixels):imageId(id),pixels(pixels) {
@@ -48,77 +47,108 @@ public:
 
 
 
-/////////////////////////////functions for merging to trees into one AVL tree !!
-    void treeToArray(Tree<int>* tree,int* array){
+////////////////////////////functions for merging to trees into one AVL tree !!
+//receives the real root//receives index 0
+    void treeToArray(Tree<int>* tree,Tree<int>* array[],int* index){
         assert(array);
         if(!tree){
-            return;
+            return ;
         }
-        treeToArray(tree->getLeft(),array);
-        array[tree->index]=tree->getKey();
-        tree->index++;
-        treeToArray(tree->getRight(),array);
+        treeToArray(tree->getLeft(),array,index);
+        array[(*index)++]=tree;
+        treeToArray(tree->getRight(),array,index);
     }
 
-    Tree<int>* arrayToTreeAux(int * array,int left,int right,Tree<int>* father){
+    Tree<int>* arrayToTreeAux(Tree<int>* array[],int left,int right,Tree<int>* father){
         if(left==right){
-            Tree<int>* subTree = new Tree<int>(array[left], , father);
+            Tree<int>* subTree = array[left];
+            subTree->setLeft(nullptr);
+            subTree->setRight(nullptr);
+            subTree->setFather(father);
+            return subTree;
         }
         int mid=(left+right)/2;
-        Tree<int>* root = new Tree<int>(array[mid], , father);
-        root->setLeft(arrayToTreeAux(array,left,mid,root));
-        root->setLeft(arrayToTreeAux(array,mid+1,right,root));
+
+        Tree<int>* root = array[mid];
+        root->setFather(father);
+        if(mid!=left) {
+            root->setLeft(arrayToTreeAux(array, left, mid - 1, root));
+        }
+        else {
+            root->setLeft(nullptr);
+        }
+        if(mid!=right) {
+            root->setRight(arrayToTreeAux(array, mid + 1, right, root));
+        }
+        else {
+            root->setRight(nullptr);
+        }
+        return root;
     }
-    Tree<int>* arrayToTree(int * array,int size){
-        Tree<int>* tree=(Tree<int>*) Init_Tree();
-        tree->setLeft(arrayToTreeAux(array,0,size-1,tree));
-        return tree;
+    Tree<int>* arrayToTree(Tree<int> * array[],int size){
+        Tree<int>* head=(Tree<int>*) Init_Tree();
+        head->setLeft(arrayToTreeAux(array,0,size-1,head));
+        return head;
     }
 //dest should be sized m+n;
-    void mergeArrays(int *a,int na,int* b,int nb,int* dest){
+    int mergeArrays(Tree<int>* a[],int na,Tree<int> *b[],int nb,Tree<int>* dest[]){
+        int mergedArraySize=na+nb;
         int ia=0,ib=0,ic;
         for (ic=0; ic<na+nb;) {
             if (ia<na && ib<nb) {
-                if (a[ia] < b[ib]) {
-                    dest[ic] = a[ia++];
+                if (a[ia]->getKey() < b[ib]->getKey()) {
+                    dest[ic]=new Tree<int>(a[ia]->getKey(), nullptr, nullptr);
+                    ia++;
                 }
-                else {
-                    dest[ic] = b[ib++];
+                else if(a[ia]->getKey() > b[ib]->getKey()){
+                    dest[ic]=new Tree<int>(b[ib]->getKey(), nullptr, nullptr);
+                    ib++;
 
                 }
-                i++;
+
+                    //////////////////////////////////////////////////////
+                else{//reaching here means the two labels are equal
+                    dest[ic]=new Tree<int>(a[ia]->getKey(), nullptr, nullptr);
+
+                    dest[ic]->score=a[ia]->score+b[ib]->score;
+                    ia++;
+                    ib++;
+                }
+                //////////////////////////////////////////////////////
+                ic++;
             }
             else if (ia == na) {
-                for (; ic < na + nb;) {
-                    dest[ic++] = b[ib++];
+                for (; ib < nb ;ic++,ib++) {
+                    dest[ic]=new Tree<int>(b[ib]->getKey(), nullptr, nullptr);
                 }
             }
             else {
-                for (; ic < na + nb;) {
-                    dest[ic++] = a[ia++];
+                for (; ia< na ;ic++,ia++) {
+                    dest[ic]=new Tree<int>(a[ia]->getKey(), nullptr, nullptr);
                 }
             }
         }
-    }
 
-    Tree<int>* mergeTrees(Tree<int>* tree1,int size1,Tree<int>* tree2,int size2){
-        int* array1=new int[size1];
-        int* array2=new int[size2];
-        int* mergedArr=new int[size1+size2];
-        treeToArray(tree1,array1);
-        treeToArray(tree2,array2);
-        mergeArrays(array1,size1,array2,size2,mergedArr);
-        Tree<int>* mergedTree = arrayToTree(mergedArr,size1+size2);
+        return ic;
+    }
+//this function receives the real roots
+    Tree<int>* mergeTrees(Tree<int>* tree1,int size1,Tree<int>* tree2,int size2,int* returnsize){
+        Tree<int>** array1=new Tree<int>*[size1];
+        Tree<int>** array2=new Tree<int>*[size2];
+        Tree<int>** mergedArr=new Tree<int>*[size1+size2];
+        int index=0;
+        treeToArray(tree1,array1,&index);
+        index=0;
+        treeToArray(tree2,array2,&index);
+        *returnsize=mergeArrays(array1,size1,array2,size2,mergedArr);
+        Tree<int>* mergedTree = arrayToTree(mergedArr,*returnsize);
+        updateAllMaxScores(mergedTree);
+        updateAllHeights(mergedTree);
         delete [] array1;
         delete [] array2;
         delete [] mergedArr;
         return mergedTree;
     }
-
-
-
-
-
 
 
 
@@ -130,7 +160,7 @@ public:
         Pixel* superPixel =pixel->getSuper();
         setRouteParent(pixel,superPixel);
         if(UpdateScore(superPixel->labelsTree,label,score,superPixel->getRoot())) {
-           /////////////////////need to update max label after correction was made!!
+            superPixel->maxLabel=UpdateMaxLabel(superPixel->getRoot());
             return SUCCESS;
         }
         void *node;
@@ -138,8 +168,7 @@ public:
             return FAILURE;
         superPixel->treeSize++;
         updateTillRoot(node,superPixel->getRoot());
-/////////////////////need to update max label after correction was made!!
-///////////////////////////////////////update maxLabel and maxScore for superPixel !!
+        superPixel->maxLabel=UpdateMaxLabel(superPixel->getRoot());
         return SUCCESS;
     }
 
@@ -150,9 +179,8 @@ public:
         Pixel* superPixel =pixel->getSuper();
         setRouteParent(pixel,superPixel);
         if(Delete_Tree(superPixel->labelsTree,label)!=SUCCESS) return FAILURE;
-////////////////////////////////////////neeeds Fix after deleting label from tree and need to
-///////////////////////////////////////update maxLabel and maxScore for superPixel !!
-
+        superPixel->maxLabel=UpdateMaxLabel(superPixel->getRoot());
+        superPixel->treeSize--;
         return SUCCESS;
     }
 
@@ -188,15 +216,14 @@ public:
         }
         source->parent=dest;
         dest->size+=source->size;
-        dest->getRoot()->index=0;
-        source->getRoot()->index=0;
-        Tree<int>* newTree=mergeTrees(dest->getRoot(),dest->size,source->getRoot(),source->size);
-        Quit_Tree((void**)&source->labelsTree);
-        Quit_Tree((void**)&dest->labelsTree);
+
+        Tree<int>* newTree=mergeTrees(dest->getRoot(),dest->treeSize,source->getRoot(),source->treeSize,&(dest->treeSize));
         dest->labelsTree=newTree;
-        updateAllMaxScores(dest->getRoot());
-        //////////////////////////////////////////////////////////////not done need to fix max !!
-        ///////// update Max label and max SCore
+        UpdateMaxLabel(dest->getRoot());
+        Quit_Tree((void**)&(source->labelsTree));
+        Quit_Tree((void**)&(dest->labelsTree));
+
+
     }
 
 
@@ -223,7 +250,23 @@ public:
 
     }
 
+    void updateAllHeights(Tree<int>* node){
+        if(!node){
+            return;
+        }
+        updateAllHeights(node->getLeft());
+        updateAllHeights(node->getRight());
+        node->setHeight(max(node->getLeft()->getHeight(),node->getRight()->getHeight())+1);
+    }
+
 };
+
+
+
+
+
+
+
 
 
 

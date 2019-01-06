@@ -7,61 +7,7 @@
 using std::cout;
 
 
-//functions for updating max score after insertion or deletion.
 
-static int maxOfThree (int a , int b , int c ) {
-    if(a >= b   ) {
-        if(a>=c) return a;
-        if(a < c ) return c;
-    } else {
-        if(b >= c) return b;
-        if(b < c ) return c;
-    }
-
-}
-
-int getMaxScore(Tree<int> *node) {
-    if(node == nullptr) return 0;
-    else
-        return node->maxScore;
-}
-
-void updateMax (void *node1) {
-    Tree<int>* node=static_cast<Tree<int> *>(node1);
-    node->maxScore=maxOfThree(getMaxScore(node),getMaxScore(node->getLeft()),getMaxScore(node->getRight()));
-    return;
-}
-
-bool UpdateScore(void *DS, int key, int score,void* root) {
-    if (!DS) {
-        return false;
-    }
-
-    Tree<int>* node = Find_Helper( DS , key );
-    if(!node){
-        return false;//because the key wasn't found
-    }
-    else{
-        node->score=score;
-        updateMax(node);
-        updateTillRoot(node,root);
-        return true;
-    }
-
-}
-
-void updateTillRoot(void *node,void *root) {
-
-    Tree<int>* node_=static_cast<Tree<int> *>(node);
-    Tree<int>* root_=static_cast<Tree<int> *>(root);
-
-
-    while(node_ != root_) {
-        updateMax(node_);
-        node_=node_->getFather();
-    }
-    return;
-}
 
 //static void AVL_Fix(int BF_father, int BF_son, Tree<int> *p, Tree<int> *v) {
 static int AVL_Fix(int BF_father, Tree<int> *p) {
@@ -190,21 +136,22 @@ template <class  T>
 static void sortTree(Tree<T> *root, Tree<T> *v) {
     assert(v && root);//to// make sure non of them is null
     if (v == root) {
-        updateMax(v);
+      //  updateMax(v);
         return;
     }
     Tree<T> *p = v->getFather();
-    updateMax(p);
+   // updateMax(p);
     if ((p->getHeight()) >= (v->getHeight() + 1)) {
         return;
     }
     p->setHeight(v->getHeight() + 1);
     int BF_father = p->getLeft()->getHeight() - p->getRight()->getHeight();
-    updateMax(p);
+   // updateMax(p);
     if (BF_father >= 2 || BF_father <= -2) {
         AVL_Fix(BF_father ,p);
         return;
     }
+
     sortTree<T>(root,p);
 
 }
@@ -230,6 +177,7 @@ static void sortTreeDel(Tree<T>* root, Tree<T>* v){
     }
 
     sortTreeDel(root,p);
+
 }
 
 
@@ -263,10 +211,12 @@ static void remove_node(Tree<int>* root, Tree<int>* node){
             node->getRight()->setFather(nodePa);
         }
     }
+    updateTillRoot(nodePa,root);
     if(node!=root) {
         sortTreeDel<int>(root,nodePa);
-    }
 
+    }
+    updateTillRoot(nodePa,root);
     delete node;
 }
 //helper function for delete
@@ -399,7 +349,9 @@ StatusType Add_Tree(void *DS, int key, void *value, int score,void **node) {
 
         *node=newTree;
         (head->size)++;//root here is the dummy
+        updateTillRoot(newTree,head->getLeft());
         sortTree<int>(head->getLeft(), newTree);//sortTree: insert algorithm fix
+        updateTillRoot(newTree,head->getLeft());
     } catch (std::bad_alloc& ba) {
         return ALLOCATION_ERROR;
     }
@@ -466,80 +418,82 @@ void Quit_Tree(void **DS) {
 }
 
 
+//functions for updating max score after insertion or deletion.
 
+static int maxOfThree (int a , int b , int c ) {
 
+    return max(c,max(a,b));
+}
 
+int getMaxScore(Tree<int> *node) {
+    if(node == nullptr) return 0;
+    else
+        return node->maxScore;
+}
 
+void updateMax (void *node1) {
+    Tree<int>* node=static_cast<Tree<int> *>(node1);
+    node->maxScore=maxOfThree(getMaxScore(node),getMaxScore(node->getLeft()),getMaxScore(node->getRight()));
+    return;
+}
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-void treeToArray(void* tree,int* array){
-    assert(array);
-    if(!tree){
-        return;
+bool UpdateScore(void *DS, int key, int score,void* root) {
+    if (!DS) {
+        return false;
     }
-    Tree<int>* tree_=static_cast<Tree<int> *>(tree);
-    treeToArray(tree_->getLeft(),array);
-    array[tree_->index]=tree_->getKey();
-    tree_->index++;
-    treeToArray(tree_->getRight(),array);
-}
 
-void* arrayToTreeAux(int * array,int left,int right,void* father){
-    if(left==right){
-        Tree<int>* subTree = new Tree<int>(array[left], , father);
+    Tree<int>* node = Find_Helper( DS , key );
+    if(!node){
+        return false;//because the key wasn't found
     }
-    int mid=(left+right)/2;
-    Tree<int>* root = new Tree<int>(array[mid], , father);
-    root->setLeft(arrayToTreeAux(array,left,mid,root));
-    root->setLeft(arrayToTreeAux(array,mid+1,right,root));
-}
-void* arrayToTree(int * array,int size){
-    Tree<int>* tree=(Tree<int>*) Init_Tree();
-    tree->setLeft(arrayToTreeAux(array,0,size-1,tree));
-    return tree;
-}
-//dest should be sized m+n;
-void mergeArrays(int *a,int na,int* b,int nb,int* dest){
-    int ia=0,ib=0,ic;
-    for (ic=0; ic<na+nb;) {
-        if (ia<na && ib<nb) {
-            if (a[ia] < b[ib]) {
-                dest[ic] = a[ia++];
-            }
-            else {
-                dest[ic] = b[ib++];
-
-            }
-            i++;
-        }
-        else if (ia == na) {
-            for (; ic < na + nb;) {
-                dest[ic++] = b[ib++];
-            }
-        }
-        else {
-            for (; ic < na + nb;) {
-                dest[ic++] = a[ia++];
-            }
-        }
+    else{
+        node->score=score;
+        updateMax(node);
+        updateTillRoot(node,root);
+        return true;
     }
+
 }
 
-void* mergeTrees(void* tree1,int size1,void* tree2,int size2);{
-    int* array1=new int[size1];
-    int* array2=new int[size2];
-    int* mergedArr=new int[size1+size2];
-    treeToArray(tree1,array1);
-    treeToArray(tree2,array2);
-    mergeArrays(array1,size1,array2,size2,mergedArr);
-    Tree<int>* mergedTree = arrayToTree(mergedArr,size1+size2);
-    delete [] array1;
-    delete [] array2;
-    delete [] mergedArr;
+void updateTillRoot(void *node,void *root) {
+
+    Tree<int>* node_=static_cast<Tree<int> *>(node);
+    Tree<int>* root_=static_cast<Tree<int> *>(root);
+
+
+    while(node_ != root_) {
+        updateMax(node_);
+        node_=node_->getFather();
+    }
+    updateMax(node_);
+    return;
 }
-*/
+
+
+
+int UpdateMaxLabel (void* root_) {
+
+    Tree<int>* root= static_cast<Tree<int>* >(root_);
+
+    while(root) {
+        if(getMaxScore(root->getRight()) >= getMaxScore(root)) {
+            root=root->getRight();
+        }
+
+        if(root->maxScore == root->score)
+            return root->getKey();
+
+        if(getMaxScore(root->getLeft()) >= getMaxScore(root))
+            root=root->getLeft();
+
+    }
+
+    return 0;
+
+}
+
+
+
 
 
 

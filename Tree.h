@@ -123,6 +123,8 @@ bool UpdateScore(void *DS, int key, int score,void* root);
 
 void updateMax (void *node1);
 
+int UpdateMaxLabel (void* root_);
+
 #ifdef __cplusplus
 }
 #endif

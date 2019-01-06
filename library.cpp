@@ -5,17 +5,16 @@
 #include "library.h"
 #include "ImageTagger.h"
 void * Init(int pixels) {
-    if(pixels<=0) return NULL;
+    if(pixels<=0) return nullptr;
     try {
         ImageTagger* sys = new ImageTagger(pixels);
         return (void*)sys;
     } catch (...) {
-        return NULL;
+        return nullptr;
     }
 }
 
 StatusType AddImage(void *DS, int imageID) {
-
 
     if(!DS || imageID <=0 )
         return INVALID_INPUT;
