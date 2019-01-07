@@ -17,10 +17,11 @@ public:
     int size;
     int elements;
     Image *deleted_image = new Image(1,1);  ///////////////////////////remember to free !!!!
-    bool transferring= false;
+    bool transferring;
 
     //constructor
     Hash():size(7),elements(0) {
+        transferring= false;
        table= new Image*[size];
        for(int i=0 ; i< size ; i++) {
            table[i]= nullptr;
@@ -28,24 +29,36 @@ public:
         deleted_image->imageId=DELETED;
     }
 
+    ~Hash() {
+        for (int i = 0; i < size; i++) {
+            if (table[i] != nullptr) {
+                if (table[i]->imageId != DELETED) {
+                    delete (table[i]);
+                }
+            }
+        }
+        delete(deleted_image);
+        delete[] (table);
+    }
+
     //function for turning an imageId into an interger that fits the array
     int hash_function(int key, int i) {
 
-        return (key%size + i*(1+key%(size-3)))%size;
+        return (key%size + i )%size;   //*(1+key%(size-3)))%size;
 
     }
 
 
-    bool add_element(Image& image) {
+    bool add_element(Image* image) {
 
         int i = 0;
         bool done = false;
         while (!done) {
-            int hashed = hash_function(image.imageId, i);
+            int hashed = hash_function(image->imageId, i);
             if (table[hashed] == nullptr ) {
                     elements++;
                 done = true;
-                table[hashed]=&image;
+                table[hashed]=image;
                 if(!transferring)
                 {
                     resize();
@@ -53,22 +66,22 @@ public:
 
                 return true;
             }
-            if (table[hashed]->imageId == DELETED ) {
+            else  if(table[hashed]->imageId == DELETED ) {
                 done = true;
-                table[hashed]=&image;
+                table[hashed]=image;
                 return true;
             }
 
 
 
-            if(table[hashed]->imageId == image.imageId) {
+            if(table[hashed]->imageId == image->imageId) {
                 return false;
             }
 
             i++;
         }
 
-
+        return true;
     }
 
 
@@ -77,7 +90,7 @@ bool delete_element(int imageId) {
     int hashed=hash_function(imageId,i);
     while(table[hashed]!= nullptr ) {
         if(table[hashed]->imageId == imageId) {
-            table[hashed]->destroy();
+            delete table[hashed];
             table[hashed]=deleted_image;
             resize();
             return true;
@@ -129,11 +142,11 @@ Image* find_element(int imageId) {
         for (int i = 0; i < old_size ; ++i) {
             if(old_table[i]!= nullptr && old_table[i]->imageId!=DELETED) {
                 transferring= true;
-                add_element(*old_table[i]);
+                add_element(old_table[i]);
                 transferring= false;
             }
         }
-       delete[](old_table);
+       delete (old_table);
 
     }
 

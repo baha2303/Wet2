@@ -18,6 +18,12 @@ public:
     Pixel():treeSize(0),maxScore(0),maxLabel(-1),size(1),parent(nullptr) {
         labelsTree = (Tree<int> *) Init_Tree();
     }
+
+    ~Pixel() {
+        if(labelsTree != nullptr )
+        Quit_Tree((void**)&labelsTree);
+    }
+
     Pixel* getSuper(){
         Pixel* pixel = this;
         while(pixel->parent){

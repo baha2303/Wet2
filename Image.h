@@ -18,21 +18,24 @@ class Image {
 
 
 public:
+
     int imageId;
-    explicit  Image(int id,int pixels):imageId(id),pixels(pixels) {
+    explicit  Image(int id,int pixels): pixels(pixels) {
+        imageId=id;
         pixelArr = new Pixel*[pixels];
         for(int i=0;i<pixels;i++) {
             pixelArr[i] = new Pixel();//pixel
         }
     }
 
-    void destroy(){
+    ~Image() {
         for(int i=0;i<pixels;i++){
-            pixelArr[i]->destroy();
-            delete pixelArr[i];
+            delete (pixelArr[i]);
         }
-        delete [] pixelArr;
+        delete[] (pixelArr);
+
     }
+
 
 
     static void setRouteParent(Pixel* pixel,Pixel* superPixel) {
@@ -96,7 +99,6 @@ public:
     }
 //dest should be sized m+n;
     int mergeArrays(Tree<int>* a[],int na,Tree<int> *b[],int nb,Tree<int>* dest[]){
-        int mergedArraySize=na+nb;
         int ia=0,ib=0,ic;
         for (ic=0; ic<na+nb;) {
             if (ia<na && ib<nb) {
@@ -204,6 +206,7 @@ public:
 
 
     StatusType mergeSets(int index1, int index2){
+
         Pixel *dest,*source;
 
         Pixel* pixel1=pixelArr[index1];
@@ -214,6 +217,7 @@ public:
         Pixel* superPixel2 = pixel2->getSuper();
         setRouteParent(pixel2,superPixel2);
 
+        if(superPixel1==superPixel2) return FAILURE;
         if(superPixel1->size >= superPixel2->size){
             dest=superPixel1;
             source=superPixel2;
@@ -231,15 +235,19 @@ public:
         if(dest->treeSize==0 ) {
             Quit_Tree((void**)&(dest->labelsTree));
             dest->labelsTree=source->labelsTree;
+            source->labelsTree= nullptr;
             dest->treeSize=source->treeSize;
+            dest->maxLabel=UpdateMaxLabel(dest->getRoot());
             return SUCCESS;
         }
         Tree<int>* newTree=mergeTrees(dest->getRoot(),dest->treeSize,source->getRoot(),source->treeSize,&(dest->treeSize));
-        dest->labelsTree=newTree;
-        UpdateMaxLabel(dest->getRoot());
-        Quit_Tree((void**)&(source->labelsTree));
+        if(!newTree)
+            return ALLOCATION_ERROR;
         Quit_Tree((void**)&(dest->labelsTree));
-
+        dest->labelsTree=newTree;
+        dest->maxLabel=UpdateMaxLabel(dest->getRoot());
+        Quit_Tree((void**)&(source->labelsTree));
+        return SUCCESS;
 
     }
 
@@ -247,13 +255,6 @@ public:
 
 
 
-    void Quit() {
-        for(int i=0 ; i<pixels ; i++) {
-            pixelArr[i]->destroy();
-            delete( pixelArr[i]);
-        }
-        delete[](pixelArr);
-    }
 
 
 
@@ -273,7 +274,7 @@ public:
         }
         updateAllHeights(node->getLeft());
         updateAllHeights(node->getRight());
-        node->setHeight(max(node->getLeft()->getHeight(),node->getRight()->getHeight())+1);
+        node->setHeight(max_int(node->getLeft()->getHeight(),node->getRight()->getHeight())+1);
     }
 
 };

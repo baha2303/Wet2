@@ -211,12 +211,12 @@ static void remove_node(Tree<int>* root, Tree<int>* node){
             node->getRight()->setFather(nodePa);
         }
     }
-    updateTillRoot(nodePa,root);
+
     if(node!=root) {
         sortTreeDel<int>(root,nodePa);
 
     }
-    updateTillRoot(nodePa,root);
+    updateTillRoot(nodePa,root->getFather());
     delete node;
 }
 //helper function for delete
@@ -416,13 +416,15 @@ void Quit_Tree(void **DS) {
     *DS = nullptr;
 
 }
-
+int max_int(int a, int b) {
+    return a > b ? a : b ;
+}
 
 //functions for updating max score after insertion or deletion.
 
 static int maxOfThree (int a , int b , int c ) {
 
-    return max(c,max(a,b));
+    return max_int( c , max_int(a,b) );
 }
 
 int getMaxScore(Tree<int> *node) {
@@ -432,6 +434,8 @@ int getMaxScore(Tree<int> *node) {
 }
 
 void updateMax (void *node1) {
+    if(!node1)
+        return;
     Tree<int>* node=static_cast<Tree<int> *>(node1);
     node->maxScore=maxOfThree(node->score,getMaxScore(node->getLeft()),getMaxScore(node->getRight()));
     return;
@@ -459,6 +463,8 @@ void updateTillRoot(void *node,void *root) {
 
     Tree<int>* node_=static_cast<Tree<int> *>(node);
     Tree<int>* root_=static_cast<Tree<int> *>(root);
+
+    if(!node_ || !root_) return;
 
 
     while(node_ != root_) {

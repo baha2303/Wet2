@@ -25,7 +25,9 @@ public:
     int maxScore;
     int score;
     explicit Tree(const T &key, Data value, Tree *father) : height(0), key(key), valuePtr(value),
-     father(father),leftSon(nullptr),rightSon(nullptr) {}
+     father(father),leftSon(nullptr),rightSon(nullptr) {
+        size=0,maxScore=0,score=0;
+    }
 
     T &getKey() {
         return key;

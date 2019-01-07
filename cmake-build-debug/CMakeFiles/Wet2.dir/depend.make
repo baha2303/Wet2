@@ -15,6 +15,10 @@ CMakeFiles/Wet2.dir/library.cpp.obj: ../TreeClass.h
 CMakeFiles/Wet2.dir/library.cpp.obj: ../library.cpp
 CMakeFiles/Wet2.dir/library.cpp.obj: ../library.h
 
-CMakeFiles/Wet2.dir/main.cpp.obj: ../library.h
+CMakeFiles/Wet2.dir/main.cpp.obj: ../catch.hpp
 CMakeFiles/Wet2.dir/main.cpp.obj: ../main.cpp
+
+CMakeFiles/Wet2.dir/tests.cpp.obj: ../catch.hpp
+CMakeFiles/Wet2.dir/tests.cpp.obj: ../library.h
+CMakeFiles/Wet2.dir/tests.cpp.obj: ../tests.cpp
 

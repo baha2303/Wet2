@@ -125,6 +125,8 @@ void updateMax (void *node1);
 
 int UpdateMaxLabel (void* root_);
 
+int max_int(int a, int b);
+
 #ifdef __cplusplus
 }
 #endif

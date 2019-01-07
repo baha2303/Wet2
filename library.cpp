@@ -101,9 +101,8 @@ StatusType MergeSuperPixels(void *DS, int imageID, int pixel1, int pixel2) {
  */
 void Quit(void** DS) {
     ImageTagger* IT = static_cast<ImageTagger*>(*DS) ;
-    IT->Quit();
     delete(IT);
-    *DS= nullptr;
+    *DS= NULL;
     return;
 }
 
