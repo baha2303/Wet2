@@ -413,6 +413,7 @@ StatusType Size_Tree(void *DS, int *n) {
 void Quit_Tree(void **DS) {
     auto head = static_cast<Tree<int> *>(*DS);
     QuitAux(head);
+//    QuitAux(head);
     *DS = nullptr;
 
 }

@@ -95,25 +95,25 @@ CMakeFiles/Wet2.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Wet2.dir/main.cpp.s"
 	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\baha2\Desktop\Data Structures 1\Wet2\main.cpp" -o CMakeFiles\Wet2.dir\main.cpp.s
 
-CMakeFiles/Wet2.dir/tests.cpp.obj: CMakeFiles/Wet2.dir/flags.make
-CMakeFiles/Wet2.dir/tests.cpp.obj: ../tests.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\baha2\Desktop\Data Structures 1\Wet2\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Wet2.dir/tests.cpp.obj"
-	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Wet2.dir\tests.cpp.obj -c "C:\Users\baha2\Desktop\Data Structures 1\Wet2\tests.cpp"
+CMakeFiles/Wet2.dir/library1LL.cpp.obj: CMakeFiles/Wet2.dir/flags.make
+CMakeFiles/Wet2.dir/library1LL.cpp.obj: ../library1LL.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\baha2\Desktop\Data Structures 1\Wet2\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Wet2.dir/library1LL.cpp.obj"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Wet2.dir\library1LL.cpp.obj -c "C:\Users\baha2\Desktop\Data Structures 1\Wet2\library1LL.cpp"
 
-CMakeFiles/Wet2.dir/tests.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Wet2.dir/tests.cpp.i"
-	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\baha2\Desktop\Data Structures 1\Wet2\tests.cpp" > CMakeFiles\Wet2.dir\tests.cpp.i
+CMakeFiles/Wet2.dir/library1LL.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Wet2.dir/library1LL.cpp.i"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\baha2\Desktop\Data Structures 1\Wet2\library1LL.cpp" > CMakeFiles\Wet2.dir\library1LL.cpp.i
 
-CMakeFiles/Wet2.dir/tests.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Wet2.dir/tests.cpp.s"
-	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\baha2\Desktop\Data Structures 1\Wet2\tests.cpp" -o CMakeFiles\Wet2.dir\tests.cpp.s
+CMakeFiles/Wet2.dir/library1LL.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Wet2.dir/library1LL.cpp.s"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\baha2\Desktop\Data Structures 1\Wet2\library1LL.cpp" -o CMakeFiles\Wet2.dir\library1LL.cpp.s
 
 # Object files for target Wet2
 Wet2_OBJECTS = \
 "CMakeFiles/Wet2.dir/library.cpp.obj" \
 "CMakeFiles/Wet2.dir/Tree.cpp.obj" \
 "CMakeFiles/Wet2.dir/main.cpp.obj" \
-"CMakeFiles/Wet2.dir/tests.cpp.obj"
+"CMakeFiles/Wet2.dir/library1LL.cpp.obj"
 
 # External object files for target Wet2
 Wet2_EXTERNAL_OBJECTS =
@@ -121,7 +121,7 @@ Wet2_EXTERNAL_OBJECTS =
 Wet2.exe: CMakeFiles/Wet2.dir/library.cpp.obj
 Wet2.exe: CMakeFiles/Wet2.dir/Tree.cpp.obj
 Wet2.exe: CMakeFiles/Wet2.dir/main.cpp.obj
-Wet2.exe: CMakeFiles/Wet2.dir/tests.cpp.obj
+Wet2.exe: CMakeFiles/Wet2.dir/library1LL.cpp.obj
 Wet2.exe: CMakeFiles/Wet2.dir/build.make
 Wet2.exe: CMakeFiles/Wet2.dir/linklibs.rsp
 Wet2.exe: CMakeFiles/Wet2.dir/objects1.rsp

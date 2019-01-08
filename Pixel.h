@@ -20,8 +20,10 @@ public:
     }
 
     ~Pixel() {
-        if(labelsTree != nullptr )
-        Quit_Tree((void**)&labelsTree);
+        if(labelsTree != nullptr || &labelsTree!= nullptr || parent != nullptr)
+        {
+            Quit_Tree((void**)&labelsTree);
+        }
     }
 
     Pixel* getSuper(){
@@ -31,9 +33,7 @@ public:
         }
         return pixel;
     }
-    void destroy(){
-        Quit_Tree((void**)&labelsTree);
-    }
+
 
     Tree<int>* getRoot () {
         return labelsTree->getLeft();

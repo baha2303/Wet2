@@ -130,12 +130,14 @@ public:
                     dest[ic]=new Tree<int>(b[ib]->getKey(), nullptr, nullptr);
                     dest[ic]->score=b[ib]->score;
                 }
+                break;
             }
             else {
                 for (; ia< na ;ic++,ia++) {
                     dest[ic]=new Tree<int>(a[ia]->getKey(), nullptr, nullptr);
                     dest[ic]->score=a[ia]->score;
                 }
+                break;
             }
         }
 
@@ -190,7 +192,7 @@ public:
         setRouteParent(pixel,superPixel);
         if(Delete_Tree(superPixel->labelsTree,label)!=SUCCESS) return FAILURE;
         superPixel->maxLabel=UpdateMaxLabel(superPixel->getRoot());
-        superPixel->treeSize--;
+        (superPixel->treeSize)--;
         return SUCCESS;
     }
 
@@ -237,12 +239,16 @@ public:
             dest->labelsTree=source->labelsTree;
             source->labelsTree= nullptr;
             dest->treeSize=source->treeSize;
+            dest->labelsTree->size=source->treeSize;
             dest->maxLabel=UpdateMaxLabel(dest->getRoot());
             return SUCCESS;
         }
-        Tree<int>* newTree=mergeTrees(dest->getRoot(),dest->treeSize,source->getRoot(),source->treeSize,&(dest->treeSize));
+        int size_;
+        Tree<int>* newTree=mergeTrees(dest->getRoot(),dest->treeSize,source->getRoot(),source->treeSize,&size_);
         if(!newTree)
             return ALLOCATION_ERROR;
+        newTree->size=size_;
+        dest->treeSize=size_;
         Quit_Tree((void**)&(dest->labelsTree));
         dest->labelsTree=newTree;
         dest->maxLabel=UpdateMaxLabel(dest->getRoot());

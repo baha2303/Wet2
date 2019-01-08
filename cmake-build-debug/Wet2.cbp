@@ -92,10 +92,13 @@
 		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/library.h">
 			<Option target="Wet2"/>
 		</Unit>
-		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/main.cpp">
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/library1LL.cpp">
 			<Option target="Wet2"/>
 		</Unit>
-		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/tests.cpp">
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/library1LL.h">
+			<Option target="Wet2"/>
+		</Unit>
+		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/main.cpp">
 			<Option target="Wet2"/>
 		</Unit>
 		<Unit filename="C:/Users/baha2/Desktop/Data Structures 1/Wet2/CMakeLists.txt">

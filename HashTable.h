@@ -5,169 +5,147 @@
 #ifndef WET2_HASHTABLE_H
 #define WET2_HASHTABLE_H
 
+#include "List.h"
 #include "Image.h"
-
-
+#include "library1LL.h"
+#include <math.h>
 #define DELETED -1
 
 class Hash {
-    Image **table;
+    void **table;
 public:
 
     int size;
     int elements;
-    Image *deleted_image = new Image(1,1);  ///////////////////////////remember to free !!!!
     bool transferring;
 
     //constructor
     Hash():size(7),elements(0) {
         transferring= false;
-       table= new Image*[size];
-       for(int i=0 ; i< size ; i++) {
-           table[i]= nullptr;
-       }
-        deleted_image->imageId=DELETED;
+        table= new void*[size];
+        for(int i=0 ; i< size ; i++) {
+            table[i]= Init_LL();
+        }
     }
 
     ~Hash() {
         for (int i = 0; i < size; i++) {
-            if (table[i] != nullptr) {
-                if (table[i]->imageId != DELETED) {
-                    delete (table[i]);
+
+                void *image = getHeadValueandDelete(table[i]);
+                while (image != nullptr) {
+                    Image *image_ = static_cast<Image *>(image);
+                    delete (image_);
+                    image = getHeadValueandDelete(table[i]);
+
                 }
-            }
+                Quit_LL(&table[i]);
         }
-        delete(deleted_image);
         delete[] (table);
     }
-
     //function for turning an imageId into an interger that fits the array
-    int hash_function(int key, int i) {
+    int hash_function(int key) {
+        double golden = (sqrt(5)-1)/2;
 
-        return (key%size + i )%size;   //*(1+key%(size-3)))%size;
-
+        double num;
+        return   ((int)(floor(size*modf(golden*key,&num))))%size ;
     }
 
 
     bool add_element(Image* image) {
 
-        int i = 0;
-        bool done = false;
-        while (!done) {
-            int hashed = hash_function(image->imageId, i);
-            if (table[hashed] == nullptr ) {
-                    elements++;
-                done = true;
-                table[hashed]=image;
-                if(!transferring)
-                {
-                    resize();
-                }
 
-                return true;
-            }
-            else  if(table[hashed]->imageId == DELETED ) {
-                done = true;
-                table[hashed]=image;
-                return true;
-            }
-
-
-
-            if(table[hashed]->imageId == image->imageId) {
-                return false;
-            }
-
-            i++;
+        int hashed = hash_function(image->imageId);
+        void* node;
+        if(Find(table[hashed],image->imageId,&node)==SUCCESS) {
+            return false;
         }
+        if(Add(table[hashed],image->imageId, (void*)image,&node)==SUCCESS){
+            elements++;
 
-        return true;
-    }
+            if(!transferring)
+                resize();
 
-
-bool delete_element(int imageId) {
-    int i=0;
-    int hashed=hash_function(imageId,i);
-    while(table[hashed]!= nullptr ) {
-        if(table[hashed]->imageId == imageId) {
-            delete table[hashed];
-            table[hashed]=deleted_image;
-            resize();
             return true;
         }
-        i++;
-        hashed=hash_function(imageId,i);
 
+        return false;
     }
-    return false;
-}
 
-Image* find_element(int imageId) {
-        int i=0;
-    int hashed=hash_function(imageId,i);
-    while(table[hashed] != nullptr ) {
-        if(table[hashed]->imageId==imageId) {
-            return table[hashed];
+
+    bool delete_element(int imageId) {
+
+        int hashed=hash_function(imageId);
+        void* node;
+        if(Find(table[hashed],imageId,&node)!=SUCCESS) {
+            return false;
         }
-        i++;
-        hashed=hash_function(imageId,i);
+        Image* image = static_cast<Image*>(node);
+        delete(image);
+        if(Delete(table[hashed],imageId)==SUCCESS) {
+            elements--;
+            resize();
+            return true;
+
+        }
+        return false;
     }
 
-    return nullptr;
+
+    Image* find_element(int imageId) {
+        int hashed=hash_function(imageId);
+        void* node;
+        if(Find(table[hashed],imageId,&node)!=SUCCESS) {
+            return nullptr;
+        }
+        Image* image= static_cast<Image*>(node);
+        return image;
     }
 
 
 
     void resize() {
-            if(elements==size) {
-                transfer(size*2);
-            }
-            if(elements<=size/4 && size>7) {
-                transfer(size/2);
+        if(elements>=size) {
+            transfer(size*2);
+        }
+        if(elements<=size*0.25 && size>27) {
+            transfer(size/2);
         }
 
 
     }
 
     void transfer(int new_size) {
-      Image** old_table=table;
-      int old_size=size;
-      table= new Image*[new_size];
-      size=new_size;
-      elements=0;
+        void** old_table=table;
+        int old_size=size;
+        table= new void*[new_size];
+        size=new_size;
+        elements=0;
         for (int i = 0; i < size ; ++i) {
-            table[i]= nullptr;
-
+            table[i]= Init_LL();
         }
+        transferring=true;
         for (int i = 0; i < old_size ; ++i) {
-            if(old_table[i]!= nullptr && old_table[i]->imageId!=DELETED) {
-                transferring= true;
-                add_element(old_table[i]);
-                transferring= false;
+            void* image=getHeadValueandDelete(old_table[i]);
+            while(image != nullptr) {
+                Image* image_= static_cast<Image*>(image);
+                add_element(image_);
+                image=getHeadValueandDelete(old_table[i]);
             }
         }
-       delete (old_table);
+        for (int i = 0; i < old_size ; ++i) {
+            Quit_LL(&old_table[i]);
+        }
 
+        delete [](old_table);
+        transferring=false;
     }
 
-    Image** getHashArray(int* array_size) {
+    void** getHashArray(int* array_size) {
         *array_size=size;
         return table;
     }
 
 
-    void print() {
-
-        for (int i = 0; i < size ; ++i) {
-            if(table[i]== nullptr) {
-                std::cout << i << "--NULL___";
-            }
-            else {
-                std::cout << i << "--" << table[i]->imageId << "___" ;
-            }
-        }
-        std::cout << std::endl;
-    }
 
 };
 

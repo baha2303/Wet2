@@ -176,6 +176,33 @@ library.cpp.s:
 	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/library.cpp.s
 .PHONY : library.cpp.s
 
+library1LL.obj: library1LL.cpp.obj
+
+.PHONY : library1LL.obj
+
+# target to build an object file
+library1LL.cpp.obj:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/library1LL.cpp.obj
+.PHONY : library1LL.cpp.obj
+
+library1LL.i: library1LL.cpp.i
+
+.PHONY : library1LL.i
+
+# target to preprocess a source file
+library1LL.cpp.i:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/library1LL.cpp.i
+.PHONY : library1LL.cpp.i
+
+library1LL.s: library1LL.cpp.s
+
+.PHONY : library1LL.s
+
+# target to generate assembly for a file
+library1LL.cpp.s:
+	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/library1LL.cpp.s
+.PHONY : library1LL.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -203,33 +230,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-tests.obj: tests.cpp.obj
-
-.PHONY : tests.obj
-
-# target to build an object file
-tests.cpp.obj:
-	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/tests.cpp.obj
-.PHONY : tests.cpp.obj
-
-tests.i: tests.cpp.i
-
-.PHONY : tests.i
-
-# target to preprocess a source file
-tests.cpp.i:
-	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/tests.cpp.i
-.PHONY : tests.cpp.i
-
-tests.s: tests.cpp.s
-
-.PHONY : tests.s
-
-# target to generate assembly for a file
-tests.cpp.s:
-	$(MAKE) -f CMakeFiles\Wet2.dir\build.make CMakeFiles/Wet2.dir/tests.cpp.s
-.PHONY : tests.cpp.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -245,12 +245,12 @@ help:
 	@echo ... library.obj
 	@echo ... library.i
 	@echo ... library.s
+	@echo ... library1LL.obj
+	@echo ... library1LL.i
+	@echo ... library1LL.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
-	@echo ... tests.obj
-	@echo ... tests.i
-	@echo ... tests.s
 .PHONY : help
 
 

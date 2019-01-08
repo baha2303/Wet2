@@ -2,7 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Wet2.dir/library.cpp.obj"
   "CMakeFiles/Wet2.dir/Tree.cpp.obj"
   "CMakeFiles/Wet2.dir/main.cpp.obj"
-  "CMakeFiles/Wet2.dir/tests.cpp.obj"
+  "CMakeFiles/Wet2.dir/library1LL.cpp.obj"
   "Wet2.pdb"
   "Wet2.exe"
   "Wet2.exe.manifest"
